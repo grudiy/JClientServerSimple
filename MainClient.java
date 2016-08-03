@@ -1,7 +1,6 @@
 package com.grudiy.chat.client;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -17,27 +16,26 @@ public class MainClient {
             System.out.println("Connected to server.");
             System.out.println("Enter your message (type Q to quit):");
 
-            InputStream is = System.in; //read input from console
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            // BufferedReader in = new BufferedReader( // I can write such short form
-            //        new InputStreamReader(System.in));
-            String str = br.readLine();
+//            InputStream is = System.in; //read input from console // long form
+//            InputStreamReader isr = new InputStreamReader(is);
+//            BufferedReader br = new BufferedReader(isr);
 
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true); //write to socket
+            BufferedReader input = new BufferedReader(
+                    new InputStreamReader(System.in));
+            String str = input.readLine();
+
+            PrintWriter output = new PrintWriter(clientSocket.getOutputStream(),true); //write to socket
             while (str != null) {
                 if (str.equalsIgnoreCase("q")) {
                     System.out.println("Quit.");
                     break;
                 }
-                out.println(str);
-                str = br.readLine();
+                output.println(str);
+                str = input.readLine();
             }
 
-            br.close();
-            isr.close();
-            is.close();
-            out.close();
+            input.close();
+            output.close();
             clientSocket.close();
         }
         catch (Exception e) {
